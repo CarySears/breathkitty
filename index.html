@@ -216,77 +216,7 @@
             text-align: right;
         }
 
-        /* Upgrade Offer */
-        .upgrade-offer {
-            background: linear-gradient(135deg, rgba(206, 143, 41, 0.1) 0%, rgba(206, 143, 41, 0.05) 100%);
-            border: 2px solid var(--ochre);
-            border-radius: 15px;
-            padding: 25px 20px 20px;
-            margin: 20px 0;
-            position: relative;
-            overflow: visible;
-            animation: subtlePulse 4s ease-in-out infinite;
-        }
-        
-        @keyframes subtlePulse {
-            0%, 100% {
-                box-shadow: 0 5px 15px rgba(206, 143, 41, 0.1);
-            }
-            50% {
-                box-shadow: 0 5px 25px rgba(206, 143, 41, 0.2);
-            }
-        }
 
-        .upgrade-offer::before {
-            content: 'SPECIAL OFFER';
-            position: absolute;
-            top: -8px;
-            right: 20px;
-            background: var(--ochre);
-            color: white;
-            padding: 5px 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            border-radius: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-        }
-
-        .upgrade-checkbox {
-            display: flex;
-            align-items: start;
-            gap: 12px;
-            cursor: pointer;
-        }
-
-        .upgrade-checkbox input {
-            margin-top: 2px;
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-        }
-
-        .upgrade-details h4 {
-            color: var(--sea);
-            margin-bottom: 8px;
-            font-size: 1.1rem;
-        }
-
-        .upgrade-details p {
-            font-size: 0.9rem;
-            color: var(--rust);
-            margin-bottom: 5px;
-        }
-
-        .savings-badge {
-            display: inline-block;
-            background: var(--success);
-            color: white;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            margin-top: 8px;
-        }
 
         /* Totals */
         .order-totals {
@@ -454,10 +384,7 @@
                 align-items: center;
             }
             
-            .upgrade-offer::before {
-                font-size: 0.65rem;
-                padding: 3px 15px;
-            }
+
         }
 
         /* Card Icons */
@@ -533,18 +460,7 @@
                     <div class="item-price">$9</div>
                 </div>
                 
-                <!-- Upgrade Product (hidden by default) -->
-                <div class="order-item" id="upgradeItem" style="display: none;">
-                    <div class="item-details">
-                        <h3>Complete Bundle: Both Programs</h3>
-                        <p>Everything above + 12 advanced techniques + 2hrs training</p>
-                        <p style="color: var(--ochre); font-size: 0.85rem; margin-top: 5px;">💰 Saving $765 off regular price!</p>
-                    </div>
-                    <div class="item-price">
-                        <div style="text-decoration: line-through; opacity: 0.6; font-size: 0.9rem;">$1274</div>
-                        <div style="font-size: 1.3rem; color: var(--coral); font-weight: 700;">$509</div>
-                    </div>
-                </div>
+
 
                 <!-- Reminder of what they're getting -->
                 <div style="background: linear-gradient(135deg, rgba(163, 182, 229, 0.2) 0%, rgba(163, 182, 229, 0.1) 100%); border-radius: 12px; padding: 25px 18px 18px; margin: 20px 0 15px; border: 2px solid var(--sky); position: relative;">
@@ -565,35 +481,10 @@
                     </p>
                 </div>
 
-                <!-- Upgrade Offer -->
-                <div class="upgrade-offer">
-                    <label class="upgrade-checkbox">
-                        <input type="checkbox" id="upgradeCheckbox" onchange="toggleUpgrade()">
-                        <div class="upgrade-details">
-                            <h4>🎯 Add: Complete Breathing 101 System</h4>
-                            <p><strong>Get BOTH programs for just $509</strong> <span style="text-decoration: line-through; opacity: 0.7;">Normally $1274</span></p>
-                            <p style="color: var(--ochre); font-size: 0.85rem; margin: 8px 0;">⏰ This price is only available right now at checkout!</p>
-                            <p style="font-size: 0.9rem; margin-bottom: 10px;"><em>Includes everything in the Catch Your Breath Kit PLUS:</em></p>
-                            <p>• 12+ advanced breathing techniques</p>
-                            <p>• 2+ hours of in-depth video training</p>
-                            <p>• Breath-body connection practices</p>
-                            <p>• Advanced stress & anxiety protocols</p>
-                            <p>• Lifetime access to all materials</p>
-                            <span class="savings-badge">Save $765 Today!</span>
-                        </div>
-                    </label>
-                </div>
+
 
                 <!-- Totals -->
                 <div class="order-totals">
-                    <div class="total-row" id="kitOnlyRow">
-                        <span>Catch Your Breath Kit</span>
-                        <span>$9.00</span>
-                    </div>
-                    <div class="total-row" id="upgradeRow" style="display: none;">
-                        <span>BOTH Programs Bundle</span>
-                        <span>$509.00</span>
-                    </div>
                     <div class="total-row final">
                         <span>Total Due Today</span>
                         <span id="totalAmount">$9.00</span>
@@ -627,32 +518,7 @@
             }
         }
 
-        // Toggle upgrade
-        function toggleUpgrade() {
-            const checkbox = document.getElementById('upgradeCheckbox');
-            const mainItem = document.getElementById('mainItem');
-            const upgradeItem = document.getElementById('upgradeItem');
-            const kitOnlyRow = document.getElementById('kitOnlyRow');
-            const upgradeRow = document.getElementById('upgradeRow');
-            const totalAmount = document.getElementById('totalAmount');
-            const submitButton = document.getElementById('submitButton');
-            
-            if (checkbox.checked) {
-                mainItem.style.display = 'none';
-                upgradeItem.style.display = 'flex';
-                kitOnlyRow.style.display = 'none';
-                upgradeRow.style.display = 'flex';
-                totalAmount.textContent = '$509.00';
-                submitButton.innerHTML = 'Complete Purchase → $509';
-            } else {
-                mainItem.style.display = 'flex';
-                upgradeItem.style.display = 'none';
-                kitOnlyRow.style.display = 'flex';
-                upgradeRow.style.display = 'none';
-                totalAmount.textContent = '$9.00';
-                submitButton.innerHTML = 'Complete Purchase → $9';
-            }
-        }
+
 
         // Format card number
         document.getElementById('cardNumber').addEventListener('input', function(e) {
