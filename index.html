@@ -627,6 +627,29 @@
             }
         }
 
+        // Proceed to payment function for upgrade
+        function proceedToPayment() {
+            // This could redirect to a different ActionPotential form for the upgrade,
+            // or open a new payment window, or show a different checkout flow
+            
+            // For now, let's redirect to the same form but try with parameters
+            const upgradeFormUrl = 'https://link.actionpotential.ai/widget/form/NJLVX7sVQoh77Rmg8EmN?upgrade=true&price=509&product=complete-bundle';
+            
+            // Option 1: Replace the iframe source
+            const iframe = document.getElementById('inline-NJLVX7sVQoh77Rmg8EmN');
+            if (iframe) {
+                iframe.src = upgradeFormUrl;
+                iframe.style.display = 'block';
+                const upgradeMessage = document.getElementById('upgrade-message');
+                if (upgradeMessage) {
+                    upgradeMessage.style.display = 'none';
+                }
+            }
+            
+            // Option 2: Could also open in new window if needed
+            // window.open(upgradeFormUrl, '_blank');
+        }
+
         // Toggle upgrade
         function toggleUpgrade() {
             const checkbox = document.getElementById('upgradeCheckbox');
@@ -660,19 +683,77 @@
                     console.log('Cross-origin communication not available:', error);
                 }
                 
-                // Alternative: Update iframe src with upgrade parameter
+                // Replace iframe with upgrade message or different form
                 try {
                     if (iframe) {
-                        const currentSrc = iframe.src;
-                        const separator = currentSrc.includes('?') ? '&' : '?';
-                        const newSrc = currentSrc.split('?')[0] + separator + 'upgrade=true&price=509';
-                        // Only update if different to avoid reload issues
-                        if (iframe.src !== newSrc) {
-                            iframe.src = newSrc;
+                        const paymentSection = iframe.parentElement;
+                        iframe.style.display = 'none';
+                        
+                        // Check if upgrade message already exists
+                        let upgradeMessage = document.getElementById('upgrade-message');
+                        if (!upgradeMessage) {
+                            upgradeMessage = document.createElement('div');
+                            upgradeMessage.id = 'upgrade-message';
+                            upgradeMessage.style.cssText = `
+                                background: linear-gradient(135deg, var(--coral) 0%, var(--rust) 100%);
+                                color: white;
+                                padding: 40px;
+                                border-radius: 20px;
+                                text-align: center;
+                                box-shadow: 0 10px 30px rgba(22, 74, 80, 0.15);
+                            `;
+                            upgradeMessage.innerHTML = `
+                                <h3 style="margin-bottom: 20px; font-size: 1.5rem;">🎉 Upgrade Selected!</h3>
+                                <p style="margin-bottom: 20px; font-size: 1.1rem; line-height: 1.6;">
+                                    You've selected the <strong>Complete Bundle</strong> for $509<br>
+                                    <span style="opacity: 0.9; font-size: 0.95rem;">(Save $765 off regular price!)</span>
+                                </p>
+                                <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 10px; margin: 20px 0;">
+                                    <p style="margin: 0; font-size: 0.95rem;">
+                                        ✅ Catch Your Breath Kit ($9 value)<br>
+                                        ✅ Complete Breathing 101 System ($1274 value)<br>
+                                        ✅ Everything included for just $509
+                                    </p>
+                                </div>
+                                <button onclick="proceedToPayment()" style="
+                                    background: white;
+                                    color: var(--rust);
+                                    border: none;
+                                    padding: 15px 30px;
+                                    border-radius: 25px;
+                                    font-size: 1.1rem;
+                                    font-weight: 600;
+                                    cursor: pointer;
+                                    transition: all 0.3s ease;
+                                    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                                    margin: 10px;
+                                " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+                                    Proceed to Payment →
+                                </button>
+                                <button onclick="toggleUpgrade()" style="
+                                    background: transparent;
+                                    color: white;
+                                    border: 2px solid white;
+                                    padding: 12px 25px;
+                                    border-radius: 25px;
+                                    font-size: 0.95rem;
+                                    font-weight: 500;
+                                    cursor: pointer;
+                                    transition: all 0.3s ease;
+                                    margin: 10px;
+                                " onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='transparent'">
+                                    ← Back to Basic Kit
+                                </button>
+                                <p style="margin-top: 15px; font-size: 0.85rem; opacity: 0.9;">
+                                    Click to continue with secure checkout
+                                </p>
+                            `;
+                            paymentSection.appendChild(upgradeMessage);
                         }
+                        upgradeMessage.style.display = 'block';
                     }
                 } catch (error) {
-                    console.log('Unable to update iframe src:', error);
+                    console.log('Unable to show upgrade message:', error);
                 }
             } else {
                 mainItem.style.display = 'flex';
@@ -696,16 +777,17 @@
                     console.log('Cross-origin communication not available:', error);
                 }
                 
-                // Alternative: Update iframe src to remove upgrade parameter
+                // Show original iframe and hide upgrade message
                 try {
                     if (iframe) {
-                        const baseUrl = 'https://link.actionpotential.ai/widget/form/NJLVX7sVQoh77Rmg8EmN';
-                        if (iframe.src !== baseUrl) {
-                            iframe.src = baseUrl;
+                        iframe.style.display = 'block';
+                        const upgradeMessage = document.getElementById('upgrade-message');
+                        if (upgradeMessage) {
+                            upgradeMessage.style.display = 'none';
                         }
                     }
                 } catch (error) {
-                    console.log('Unable to update iframe src:', error);
+                    console.log('Unable to show original form:', error);
                 }
             }
         }
