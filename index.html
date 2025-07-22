@@ -636,7 +636,6 @@
             const upgradeRow = document.getElementById('upgradeRow');
             const totalAmount = document.getElementById('totalAmount');
             const submitButton = document.getElementById('submitButton');
-            const iframe = document.getElementById('inline-NJLVX7sVQoh77Rmg8EmN');
             
             if (checkbox.checked) {
                 mainItem.style.display = 'none';
@@ -645,35 +644,6 @@
                 upgradeRow.style.display = 'flex';
                 totalAmount.textContent = '$509.00';
                 submitButton.innerHTML = 'Complete Purchase → $509';
-                
-                // Try to communicate with the iframe form
-                try {
-                    if (iframe && iframe.contentWindow) {
-                        // Send message to iframe to check the upgrade option
-                        iframe.contentWindow.postMessage({
-                            type: 'upgrade_selected',
-                            value: true,
-                            price: 509
-                        }, 'https://link.actionpotential.ai');
-                    }
-                } catch (error) {
-                    console.log('Cross-origin communication not available:', error);
-                }
-                
-                // Alternative: Update iframe src with upgrade parameter
-                try {
-                    if (iframe) {
-                        const currentSrc = iframe.src;
-                        const separator = currentSrc.includes('?') ? '&' : '?';
-                        const newSrc = currentSrc.split('?')[0] + separator + 'upgrade=true&price=509';
-                        // Only update if different to avoid reload issues
-                        if (iframe.src !== newSrc) {
-                            iframe.src = newSrc;
-                        }
-                    }
-                } catch (error) {
-                    console.log('Unable to update iframe src:', error);
-                }
             } else {
                 mainItem.style.display = 'flex';
                 upgradeItem.style.display = 'none';
@@ -681,32 +651,6 @@
                 upgradeRow.style.display = 'none';
                 totalAmount.textContent = '$9.00';
                 submitButton.innerHTML = 'Complete Purchase → $9';
-                
-                // Try to communicate with the iframe form
-                try {
-                    if (iframe && iframe.contentWindow) {
-                        // Send message to iframe to uncheck the upgrade option
-                        iframe.contentWindow.postMessage({
-                            type: 'upgrade_selected',
-                            value: false,
-                            price: 9
-                        }, 'https://link.actionpotential.ai');
-                    }
-                } catch (error) {
-                    console.log('Cross-origin communication not available:', error);
-                }
-                
-                // Alternative: Update iframe src to remove upgrade parameter
-                try {
-                    if (iframe) {
-                        const baseUrl = 'https://link.actionpotential.ai/widget/form/NJLVX7sVQoh77Rmg8EmN';
-                        if (iframe.src !== baseUrl) {
-                            iframe.src = baseUrl;
-                        }
-                    }
-                } catch (error) {
-                    console.log('Unable to update iframe src:', error);
-                }
             }
         }
 
@@ -806,29 +750,6 @@
                 // Redirect to success page (you would create this)
                 // window.location.href = '/success.html';
             }, 2000);
-        });
-
-        // Listen for messages from the iframe form
-        let isUpdatingFromIframe = false;
-        window.addEventListener('message', function(event) {
-            // Make sure the message is from the ActionPotential domain
-            if (event.origin !== 'https://link.actionpotential.ai') {
-                return;
-            }
-            
-            // Handle upgrade selection messages from the iframe
-            if (event.data && event.data.type === 'upgrade_selected' && !isUpdatingFromIframe) {
-                const checkbox = document.getElementById('upgradeCheckbox');
-                if (checkbox && checkbox.checked !== event.data.value) {
-                    isUpdatingFromIframe = true;
-                    checkbox.checked = event.data.value;
-                    // Trigger the upgrade toggle function without causing infinite loop
-                    toggleUpgrade();
-                    setTimeout(() => {
-                        isUpdatingFromIframe = false;
-                    }, 100);
-                }
-            }
         });
 
         // Smooth scroll for mobile
