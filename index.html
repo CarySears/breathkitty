@@ -498,85 +498,26 @@
         </header>
 
         <div class="checkout-container">
-            <!-- Payment Form -->
+            <!-- Embedded Order Form -->
             <div class="payment-section">
-                <h2 class="section-title">
-                    <span>💳</span> Payment Information
-                </h2>
-
-                <!-- Payment Method Selection -->
-                <div class="payment-methods">
-                    <div class="payment-method active" onclick="selectPaymentMethod('card')">
-                        <span>Credit Card</span>
-                    </div>
-                    <div class="payment-method" onclick="selectPaymentMethod('paypal')">
-                        <span>PayPal</span>
-                    </div>
-                </div>
-
-                <!-- Card Payment Form -->
-                <form id="paymentForm">
-                    <div class="form-group">
-                        <label for="email">Email Address</label>
-                        <input type="email" id="email" name="email" placeholder="you@example.com" required>
-                        <span class="error-message">Please enter a valid email address</span>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="cardName">Name on Card</label>
-                        <input type="text" id="cardName" name="cardName" placeholder="Jane Doe" required>
-                        <span class="error-message">Please enter the name on your card</span>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="cardNumber">Card Number</label>
-                        <input type="text" id="cardNumber" name="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" required>
-                        <div class="card-icons">
-                            <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f4b3.svg" alt="Card">
-                        </div>
-                        <span class="error-message">Please enter a valid card number</span>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="expiry">Expiry Date</label>
-                            <input type="text" id="expiry" name="expiry" placeholder="MM/YY" maxlength="5" required>
-                            <span class="error-message">Invalid expiry date</span>
-                        </div>
-                        <div class="form-group">
-                            <label for="cvv">CVV</label>
-                            <input type="text" id="cvv" name="cvv" placeholder="123" maxlength="4" required>
-                            <span class="error-message">Invalid CVV</span>
-                        </div>
-                    </div>
-
-                    <button type="submit" class="submit-button" id="submitButton">
-                        Complete Purchase → $9
-                    </button>
-                </form>
-
-                <!-- Value Reminder -->
-                <div style="text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--shell);">
-                    <p style="font-size: 0.9rem; color: var(--rust); font-style: italic;">
-                        🌟 Start your calm transformation in the next 2 minutes!
-                    </p>
-                </div>
-
-                <!-- Trust Elements -->
-                <div class="trust-elements">
-                    <div class="trust-item">
-                        <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
-                        <span>Secure Payment</span>
-                    </div>
-                    <div class="trust-item">
-                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-                        <span>Money-Back Guarantee</span>
-                    </div>
-                    <div class="trust-item">
-                        <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM9 6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9V6z"/></svg>
-                        <span>Private & Encrypted</span>
-                    </div>
-                </div>
+                <iframe
+                    src="https://link.actionpotential.ai/widget/form/NJLVX7sVQoh77Rmg8EmN"
+                    style="width:100%;height:100%;border:none;border-radius:3px"
+                    id="inline-NJLVX7sVQoh77Rmg8EmN" 
+                    data-layout="{'id':'INLINE'}"
+                    data-trigger-type="alwaysShow"
+                    data-trigger-value=""
+                    data-activation-type="alwaysActivated"
+                    data-activation-value=""
+                    data-deactivation-type="neverDeactivate"
+                    data-deactivation-value=""
+                    data-form-name="Catch Your Breath Kit Order"
+                    data-height="1364"
+                    data-layout-iframe-id="inline-NJLVX7sVQoh77Rmg8EmN"
+                    data-form-id="NJLVX7sVQoh77Rmg8EmN"
+                    title="Catch Your Breath Kit Order"
+                        >
+                </iframe>
             </div>
 
             <!-- Order Summary -->
@@ -816,5 +757,6 @@
             document.querySelector('.order-summary').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
     </script>
+    <script src="https://link.actionpotential.ai/js/form_embed.js"></script>
 </body>
 </html>
