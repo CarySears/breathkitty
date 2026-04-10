@@ -506,122 +506,49 @@
     </div>
 
     <script>
-        // Payment method selection
-        function selectPaymentMethod(method) {
-            document.querySelectorAll('.payment-method').forEach(el => {
-                el.classList.remove('active');
-            });
-            event.target.closest('.payment-method').classList.add('active');
-            
-            if (method === 'paypal') {
-                alert('PayPal integration would redirect to PayPal checkout');
-            }
-        }
+        (function () {
+            const successPath = '/thank-you.html';
+            let redirectedToThankYou = false;
 
+            const tryRedirectToThankYou = () => {
+                if (redirectedToThankYou) {
+                    return;
+                }
 
+                redirectedToThankYou = true;
+                window.location.href = successPath;
+            };
 
-        // Format card number
-        document.getElementById('cardNumber').addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\s/g, '');
-            let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
-            e.target.value = formattedValue;
-        });
+            // Listen for iframe submission events from the embedded checkout form.
+            window.addEventListener('message', (event) => {
+                if (!event.origin.includes('actionpotential.ai')) {
+                    return;
+                }
 
-        // Format expiry
-        document.getElementById('expiry').addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\D/g, '');
-            if (value.length >= 2) {
-                value = value.slice(0, 2) + '/' + value.slice(2, 4);
-            }
-            e.target.value = value;
-        });
+                const dataString = typeof event.data === 'string'
+                    ? event.data.toLowerCase()
+                    : JSON.stringify(event.data || {}).toLowerCase();
 
-        // Only allow numbers in CVV
-        document.getElementById('cvv').addEventListener('input', function(e) {
-            e.target.value = e.target.value.replace(/\D/g, '');
-        });
+                const looksLikeSuccessfulSubmission =
+                    dataString.includes('submitted') ||
+                    dataString.includes('submission_success') ||
+                    dataString.includes('form_submit') ||
+                    dataString.includes('payment_success') ||
+                    dataString.includes('thank_you');
 
-        // Form validation
-        function validateForm() {
-            let isValid = true;
-            const email = document.getElementById('email');
-            const cardName = document.getElementById('cardName');
-            const cardNumber = document.getElementById('cardNumber');
-            const expiry = document.getElementById('expiry');
-            const cvv = document.getElementById('cvv');
-
-            // Reset errors
-            document.querySelectorAll('.form-group').forEach(group => {
-                group.classList.remove('error');
+                if (looksLikeSuccessfulSubmission) {
+                    tryRedirectToThankYou();
+                }
             });
 
-            // Email validation
-            if (!email.value || !email.value.includes('@')) {
-                email.closest('.form-group').classList.add('error');
-                isValid = false;
+            // Smooth scroll for mobile.
+            if (window.innerWidth <= 968) {
+                const summary = document.querySelector('.order-summary');
+                if (summary) {
+                    summary.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
             }
-
-            // Name validation
-            if (!cardName.value || cardName.value.length < 2) {
-                cardName.closest('.form-group').classList.add('error');
-                isValid = false;
-            }
-
-            // Card number validation (basic)
-            const cardNumberClean = cardNumber.value.replace(/\s/g, '');
-            if (!cardNumberClean || cardNumberClean.length < 13 || cardNumberClean.length > 19) {
-                cardNumber.closest('.form-group').classList.add('error');
-                isValid = false;
-            }
-
-            // Expiry validation
-            const expiryParts = expiry.value.split('/');
-            if (!expiry.value || expiryParts.length !== 2 || expiryParts[0].length !== 2 || expiryParts[1].length !== 2) {
-                expiry.closest('.form-group').classList.add('error');
-                isValid = false;
-            }
-
-            // CVV validation
-            if (!cvv.value || cvv.value.length < 3 || cvv.value.length > 4) {
-                cvv.closest('.form-group').classList.add('error');
-                isValid = false;
-            }
-
-            return isValid;
-        }
-
-        // Form submission
-        document.getElementById('paymentForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            if (!validateForm()) {
-                return;
-            }
-
-            // Show loading
-            document.getElementById('loadingOverlay').classList.add('active');
-
-            // Simulate payment processing
-            setTimeout(() => {
-                // In a real implementation, this would:
-                // 1. Send payment data to your payment processor (Stripe, PayPal, etc.)
-                // 2. Handle the response
-                // 3. Redirect to success page or show error
-                
-                alert('Success! In a real implementation, this would process the payment and redirect to a success page.');
-                
-                // Hide loading
-                document.getElementById('loadingOverlay').classList.remove('active');
-                
-                // Redirect to success page (you would create this)
-                // window.location.href = '/success.html';
-            }, 2000);
-        });
-
-        // Smooth scroll for mobile
-        if (window.innerWidth <= 968) {
-            document.querySelector('.order-summary').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
+        })();
     </script>
     <script src="https://link.actionpotential.ai/js/form_embed.js"></script>
 </body>
